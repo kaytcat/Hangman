@@ -1,93 +1,10 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-  <title>Practice</title>
-  <meta charset="utf-8">
-  <style type="text/css">
-
-  body {
-    margin-top: 20px;
-  }
-
-  form {
-    width: 220px;
-    margin: 0 auto;
-  }
-
-  .buttons {
-    padding: 10px;
-    text-align: center;
-  }
-  </style>
-</head>
-<body>
-<form>
-  <label for="list">List:</label>
-  <input id="list" type="" name="" type="text" />
-  <button id="input">Enter</button>
-</form>
-<div class="buttons">
-  <button id="alpha">Alphabetical</button>
-  <button id="small">Small to Big</button>
-</div>
-<ul>
-
-</ul>
-
-<script type="text/javascript">
-  var list = [];
-  var input = document.getElementById('list');
-  var button = document.getElementById('input');
-  var alpha = document.getElementById('alpha');
-  var small = document.getElementById('small')
-  var ul = document.querySelector('ul');
-
-
-button.addEventListener('click', function(e) {
-var li = document.createElement('li');
-
-  li.textContent = input.value;
-  list.push(input.value);
-  console.log(list);
-  ul.appendChild(li);
-  input.value = '';
-  e.preventDefault();
-})
-
-alpha.addEventListener('click', function() {
-  console.log("hi");
- var clear = document.querySelectorAll('li');
- for (var i = 0; i < clear.length; i++) {
-  clear[i].parentNode.removeChild(clear[i]);
- }
-
- list.sort();
-
- for (var i = 0; i < list.length; i++) {
-  var li = document.createElement('li');
-  li.textContent = list[i];
-  ul.appendChild(li);
- }
-
-})
-
-
-
-</script>
-
-</body>
-</html>
-
- -->
-
-
-
 
  <!DOCTYPE html>
  <html>
  <head>
    <title>hangman</title>
    <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, user-scalable=no">
 
    <link href='http://fonts.googleapis.com/css?family=Coming+Soon' rel='stylesheet' type='text/css'>
 
@@ -329,7 +246,7 @@ alpha.addEventListener('click', function() {
 
 $(document).ready(function() {
 
-  var wordbank = ["eee"];
+  var wordbank = ["blue","zipper","dog","karl","automobile","toaster","rain","banana","chicken"];
   var start = document.getElementById("start");
   var enter = document.getElementById("enter");
   var guess = document.getElementById("guess");
