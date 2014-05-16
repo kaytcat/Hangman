@@ -73,6 +73,18 @@
     width: 347px;
     height: 503px;
     margin: 0 auto;
+    float: left;
+   }
+
+   .middle-section {
+    max-width: 550px;
+    margin: 0 auto;
+   }
+
+   .wrong-guesses {
+    float: left;
+    width: 200px;
+    height: 400px;
    }
 
    #head {
@@ -137,6 +149,7 @@
 
    .content {
     text-align: center;
+    margin-top: 20px;
    }
 
    .face {
@@ -189,6 +202,14 @@
 
    }
 
+   .letter {
+    display: inline-block;
+    color: #de8f8f;
+    font-size: 24px;
+    list-style: none;
+    padding-left: 5px;
+   }
+
 
 
    input {
@@ -202,6 +223,17 @@
    }
 
 
+   .cf:before,
+   .cf:after {
+    content: " ";
+    display: table;
+   }
+
+   .cf:after {
+    clear: both;
+   }
+
+
    </style>
  </head>
  <body>
@@ -211,6 +243,7 @@
       <button class="button" id="start">Start</button>
     </div>
 
+    <div class="middle-section cf">
     <div class="drawing">
       <div id="hanger"></div>
       <div id="head"></div>
@@ -224,6 +257,9 @@
         <div class="rightEye"></div>
         <div class="mouth"></div>
       </div>
+    </div>
+
+    <div class="wrong-guesses cf"></div>
     </div>
 
     <div class="content">
@@ -308,6 +344,12 @@ $(document).ready(function() {
 
     if (counter == word.length) {
       bodyCount++;
+      var post = document.querySelector(".wrong-guesses");
+      var letter = document.createElement("li");
+      letter.innerHTML = input;
+      letter.className = letter.className + "letter";
+      post.appendChild(letter);
+
       if (bodyCount == 1) {
       head();
       $('.face').addClass('visible');
