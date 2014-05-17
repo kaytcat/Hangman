@@ -83,8 +83,7 @@
 
    .wrong-guesses {
     float: left;
-    width: 200px;
-    height: 400px;
+    width: 100px;
    }
 
    #head {
@@ -199,7 +198,24 @@
 
    .face.horror .mouth {
       -webkit-transform: rotate(180deg);
+   }
 
+   .face.scared .mouth {
+    background-color: #de8f8f;
+    -webkit-transition: background-color 1s ease-in-out;
+    -moz-transition: background-color 1s ease-in-out;
+    -o-transition: background-color 1s ease-in-out;
+    transition: background-color 1s ease-in-out;
+
+   }
+
+   .face.dead .leftEye,
+   .face.dead .rightEye {
+    background-color: #fff;
+   }
+
+   .face.dead .mouth {
+    display: none;
    }
 
    .letter {
@@ -231,6 +247,16 @@
 
    .cf:after {
     clear: both;
+   }
+
+   .content form,
+   .answer {
+    display: none;
+   }
+
+   .content.visible form,
+   .answer.visible{
+    display: block;
    }
 
 
@@ -265,11 +291,17 @@
     <div class="content">
       <form>
         <label for="guess">Guess a letter:</label>
-        <input id="guess" type="text" name="guess" autocomplete="off"/>
+        <input maxlength="1" id="guess" type="text" name="guess" autocomplete="off"/>
         <button id="enter">Enter</button>
       </form>
       <div class="word">
       </div>
+
+      <div class="answer">
+        <p>Think you know the answer??</p>
+      </div>
+
+
     </div>
 
   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -312,6 +344,11 @@ $(document).ready(function() {
 
   start.addEventListener("click", function(e) {
 
+    hanger();
+
+    $('.content').addClass('visible');
+    $('.answer').addClass('visible');
+
     var wordSplit = word.split("");
     var wordplace = document.querySelector(".word");
     for (var i = 0; i < word.length; i++) {
@@ -329,8 +366,12 @@ $(document).ready(function() {
 
   enter.addEventListener("click", function(event) {
     var input = guess.value;
+    var input = input.toLowerCase();
+
     var test = document.querySelectorAll(".line");
     var counter = 0;
+
+    if (isNaN(input)) {
 
     for (var i = 0; i < word.length; i++) {
       if (input == wordSplit[i]) {
@@ -342,44 +383,66 @@ $(document).ready(function() {
       }
     }
 
-    if (counter == word.length) {
-      bodyCount++;
-      var post = document.querySelector(".wrong-guesses");
-      var letter = document.createElement("li");
-      letter.innerHTML = input;
-      letter.className = letter.className + "letter";
-      post.appendChild(letter);
 
-      if (bodyCount == 1) {
-      head();
-      $('.face').addClass('visible');
-    } else if (bodyCount == 2) {
-      torso();
-    } else if (bodyCount == 3) {
-      leftArm();
-    } else if (bodyCount == 4) {
-      rightArm();
-      $('.face').addClass('horror');
-    } else if (bodyCount == 5) {
-      leftLeg();
-    } else if (bodyCount == 6) {
-      rightLeg();
+        if (counter == word.length) {
+          bodyCount++;
+          var post = document.querySelector(".wrong-guesses");
+          var letter = document.createElement("li");
+          letter.innerHTML = input;
+          letter.className = letter.className + "letter";
+          post.appendChild(letter);
+          var rightEye = document.querySelector(".rightEye");
+          var leftEye = document.querySelector(".leftEye");
+
+
+          if (bodyCount == 1) {
+          head();
+          $('.face').addClass('visible');
+        } else if (bodyCount == 2) {
+          torso();
+        } else if (bodyCount == 3) {
+          leftArm();
+        } else if (bodyCount == 4) {
+          rightArm();
+          $('.face').addClass('horror');
+        } else if (bodyCount == 5) {
+          leftLeg();
+          $('.face').addClass('scared');
+        } else if (bodyCount == 6) {
+          rightLeg();
+          rightEye.innerHTML = "x";
+          leftEye.innerHTML = "x";
+          $('.face').addClass('dead');
+        }
+      }
+      event.preventDefault();
+
     }
-    }
 
-
+  else {
 
     guess.value = '';
     event.preventDefault();
 
+  }
 
   });
 
 
 
+    var userAnswer = document.querySelector(".answer");
+    var userInput = document.createElement("input");
+
+    userAnswer.addEventListener("click", function() {
+      userAnswer.innerHTML = "<input class='answer-input' type='text' />"
+    })
+
+
+
+
 
   title();
-  hanger();
+
 
 function head() {
 
