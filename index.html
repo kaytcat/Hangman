@@ -421,6 +421,20 @@ $(document).ready(function() {
 
   } else {
 
+    $("#head").html("")
+      .removeClass("lazy-line")
+      .removeAttr("style")
+      .removeAttr("class")
+      .data("lazyLinePainter", null);
+    $("#torso").html("");
+    $("#leftArm").html("");
+    $("#rightArm").html("");
+    $("#leftLeg").html("");
+    $("#rightLeg").html("");
+    $(".face").removeClass("visible");
+    bodyCount = 0;
+    counterWin = 0;
+
     userAnswer.innerHTML = "Think you know the answer?";
     $('.content').addClass('visible');
     $('.answer').addClass('visible');
@@ -510,6 +524,7 @@ $(document).ready(function() {
 
     if (counter == word.length) {
       bodyCount++;
+      console.log("bodycount=" + bodyCount)
       var post = document.querySelector(".wrong-guesses");
       var letter = document.createElement("li");
       letter.innerHTML = input;
@@ -519,6 +534,7 @@ $(document).ready(function() {
       var leftEye = document.querySelector(".leftEye");
 
       if (bodyCount == 1) {
+          console.log(bodyCount);
           head();
           $('.face').addClass('visible');
         } else if (bodyCount == 2) {
@@ -606,7 +622,7 @@ function end() {
     remove_button.innerHTML = "";
 
   var removeWord = document.querySelector(".word");
-  removeWord.innerHTML = " You Lose!";
+  removeWord.innerHTML = " You Lose! <br/> <span style='font-size 14px;'> The word was: </span>" + word;
 
 
   $('.word').addClass('lose');
