@@ -57,13 +57,15 @@
    .h1  {
 
    }
+
+
    .line {
     display: inline-block;
     width: 50px;
-    height: 22px;
     margin: 5px;
     border-bottom: 1px solid black;
     text-align: center;
+    font-size: 25px;
    }
 
 
@@ -74,6 +76,7 @@
     height: 503px;
     margin: 0 auto;
     float: left;
+    margin-bottom: 20px;
    }
 
    .middle-section {
@@ -249,6 +252,10 @@
     clear: both;
    }
 
+   .content form {
+    margin: 15px;
+   }
+
    .content form,
    .answer {
     display: none;
@@ -259,6 +266,48 @@
     display: block;
    }
 
+   .word.lose {
+    font-size: 30px;
+   }
+
+   .word-container {
+    text-align: center;
+   }
+
+   .word {
+    position: relative;
+    display: inline;
+   }
+
+   .guess-input {
+    position: absolute;
+    z-index: 999;
+    left: 10px;
+    bottom: 10px;
+    width: 100%;
+    letter-spacing: 45px;
+    background-color: transparent;
+    height: 30px;
+    font-size: 25px;
+    font-family: "Coming Soon";
+
+   }
+
+   .guess-input,
+   .guess-input:focus {
+    border:none;
+    outline:none;
+    }
+
+    .guess-input {
+      animation: blink-empty 1s infinite;
+      border-left: transparent solid 1px;
+      margin:5px
+    }
+    @keyframes blink-empty {
+      50% {border-left: 2px solid #de8f8f;}
+    }
+
 
    </style>
  </head>
@@ -266,7 +315,7 @@
   <div class="container">
     <div class="header">
       <div id="title"></div>
-      <button class="button" id="start">Start</button>
+      <button class="button start">Start</button>
     </div>
 
     <div class="middle-section cf">
@@ -294,7 +343,10 @@
         <input maxlength="1" id="guess" type="text" name="guess" autocomplete="off"/>
         <button id="enter">Enter</button>
       </form>
-      <div class="word">
+      <div class="word-container">
+        <div class="word">
+        </div>
+        <div class="for-button"></div>
       </div>
 
       <div class="answer">
@@ -315,87 +367,158 @@
 $(document).ready(function() {
 
   var wordbank = ["blue","zipper","dog","karl","automobile","toaster","rain","banana","chicken"];
-  var start = document.getElementById("start");
+  var start = document.querySelector(".start");
   var enter = document.getElementById("enter");
   var guess = document.getElementById("guess");
+  var restart = true;
   var len = wordbank.length;
   var bodyCount = 0;
-
+  var winTest = [];
+  var counterWin = 0;
+  var switch_start_button_counter = 0;
   var correctGuess = [];
-
   var num = Math.floor(Math.random()*len);
-
-  // function random() {
-  //   var len = wordbank.length;
-  //   return Math.floor(Math.random()*len) + 1;
-  // }
-
   var word = wordbank[num];
-
   var wordSplit = word.split("");
 
-  console.log(num);
+
   console.log(word);
 
 
-
-
+  function emptyArray(array) {
+    while (array.length > 0) {
+      array.pop();
+    }
+  };
 
 
   start.addEventListener("click", function(e) {
 
-    hanger();
 
+    if (switch_start_button_counter == 0) {
+    hanger();
     $('.content').addClass('visible');
     $('.answer').addClass('visible');
 
-    var wordSplit = word.split("");
     var wordplace = document.querySelector(".word");
     for (var i = 0; i < word.length; i++) {
       correctGuess.push('?');
       console.log(correctGuess);
       var line = document.createElement("div");
+      winTest.push("");
       line.className = "line";
       line.innerHTML = correctGuess[i];
       wordplace.appendChild(line);
     }
 
+    var switchButton = document.querySelector(".start");
+    switchButton.innerHTML = "New Game";
+    $(".start").addClass("newGame");
+    $(".newGame").removeClass("start");
+
+          $('#guess').focus();
+    switch_start_button_counter = 1;
+
+  } else {
+
+    userAnswer.innerHTML = "Think you know the answer?";
+    $('.content').addClass('visible');
+    $('.answer').addClass('visible');
+
+
+    userInput.value = "";
+    var remove_lines = document.querySelector(".word");
+    remove_lines.innerHTML = "";
+    var remove_guesses = document.querySelector(".wrong-guesses");
+    remove_guesses.innerHTML = "";
+    var remove_button = document.querySelector(".for-button");
+    remove_button.innerHTML = "";
+
+
+    if (winTest !== undefined){
+    emptyArray(winTest);
+    console.log("wintest" + winTest)
+    };
+    if (wordSplit !== undefined){
+    emptyArray(wordSplit);
+    console.log("wordsplit" + wordSplit)
+    };
+    emptyArray(correctGuess);
+
+
+
+
+    num = Math.floor(Math.random()*len);
+    word = wordbank[num];
+    wordSplit = word.split("");
+    console.log("newword" + word)
+    console.log(wordSplit)
+    var wordplace = document.querySelector(".word");
+    for (var i = 0; i < word.length; i++) {
+      correctGuess.push('?');
+      var line = document.createElement("div");
+      winTest.push("");
+      line.className = "line";
+      line.innerHTML = correctGuess[i];
+      wordplace.appendChild(line);
+    }
+
+          $('#guess').focus();
+
+  }
+
+
   });
+
+
 
 
 
   enter.addEventListener("click", function(event) {
     var input = guess.value;
     var input = input.toLowerCase();
-
     var test = document.querySelectorAll(".line");
     var counter = 0;
+    var okay = true;
 
-    if (isNaN(input)) {
-
-    for (var i = 0; i < word.length; i++) {
-      if (input == wordSplit[i]) {
-      console.log("YAY");
-      test[i].innerHTML = input;
-         console.log(correctGuess);
-      } else {
-        counter++;
+    for (var i = 0; i < winTest.length; i++) {
+      if (winTest[i] == input) {
+        okay = false;
       }
     }
 
 
-        if (counter == word.length) {
-          bodyCount++;
-          var post = document.querySelector(".wrong-guesses");
-          var letter = document.createElement("li");
-          letter.innerHTML = input;
-          letter.className = letter.className + "letter";
-          post.appendChild(letter);
-          var rightEye = document.querySelector(".rightEye");
-          var leftEye = document.querySelector(".leftEye");
+    if (isNaN(input) && okay) {
+      for (var i = 0; i < word.length; i++) {
+        if (input == wordSplit[i]) {
+          console.log("YAY");
+          test[i].innerHTML = input;
+          winTest[i] = input;
+          console.log("wintTest=" + winTest)
+          console.log("winTest length" + winTest.length);
+          console.log("wordsplit.lengt=" + wordSplit.length);
+          counterWin++;
+          console.log("counterWin=" + counterWin)
+            if (counterWin == wordSplit.length) {
+              win();
+              console.log("win!")
+            }
+          } else {
+            counter++;
+          }
+        };
 
+    if (counter == word.length) {
+      bodyCount++;
+      var post = document.querySelector(".wrong-guesses");
+      var letter = document.createElement("li");
+      letter.innerHTML = input;
+      letter.className = letter.className + "letter";
+      post.appendChild(letter);
+      var rightEye = document.querySelector(".rightEye");
+      var leftEye = document.querySelector(".leftEye");
 
-          if (bodyCount == 1) {
+      if (bodyCount == 1) {
           head();
           $('.face').addClass('visible');
         } else if (bodyCount == 2) {
@@ -413,31 +536,98 @@ $(document).ready(function() {
           rightEye.innerHTML = "x";
           leftEye.innerHTML = "x";
           $('.face').addClass('dead');
+          end();
         }
       }
+
       event.preventDefault();
-
+      guess.value = '';
+    } //end of isNaN
+    else {
+      guess.value = '';
+      event.preventDefault();
     }
-
-  else {
-
-    guess.value = '';
-    event.preventDefault();
-
-  }
-
+        console.log("wintestbefore" + winTest + "length=" + winTest.length);
   });
 
 
 
     var userAnswer = document.querySelector(".answer");
     var userInput = document.createElement("input");
+    var place_user_input = document.querySelector(".word");
+    // var userInput_val.textContent = userInput.value;
+
 
     userAnswer.addEventListener("click", function() {
-      userAnswer.innerHTML = "<input class='answer-input' type='text' />"
+      userAnswer.innerHTML = "";
+      place_user_input.appendChild(userInput);
+      userInput.className = "guess-input";
+
+      $('.guess-input').attr('maxlength', wordSplit.length);
+      $('.guess-input').focus();
+
+      $('.content').removeClass('visible');
+    $('.answer').removeClass('visible');
+
+      var pop = document.querySelectorAll(".line");
+      console.log(pop);
+
+
+      for (var i = 0; i < pop.length; i++) {
+      pop[i].innerHTML = "";
+      }
+
+      var whole_word_button = document.createElement("button");
+      var parent_of_button = document.querySelector(".for-button");
+      parent_of_button.appendChild(whole_word_button);
+      whole_word_button.className = "final-guess";
+      var add_button_content = document.querySelector(".final-guess");
+      add_button_content.innerHTML = "Enter";
+
+      add_button_content.addEventListener("click", function() {
+        console.log(userInput.value)
+        console.log(word);
+        if (userInput.value == word) {
+          win();
+        } else {
+          end();
+        }
+      })
     })
 
 
+
+
+function end() {
+  $('.content').removeClass('visible');
+  $('.answer').removeClass('visible');
+
+  var remove_button = document.querySelector(".for-button");
+    remove_button.innerHTML = "";
+
+  var removeWord = document.querySelector(".word");
+  removeWord.innerHTML = " You Lose!";
+
+
+  $('.word').addClass('lose');
+};
+
+
+function win() {
+  var finished = winTest.join('');
+   if (finished == word || userInput.value == word) {
+    $('.content').removeClass('visible');
+    $('.answer').removeClass('visible');
+
+    var remove_button = document.querySelector(".for-button");
+    remove_button.innerHTML = "";
+
+    var removeWord = document.querySelector(".word");
+    removeWord.innerHTML = " You Win!";
+
+    $('.word').addClass('lose');
+   };
+};
 
 
 
@@ -612,7 +802,7 @@ var pathObj = {
  {
     "svgData": pathObj,
     "strokeWidth": 2,
-    "strokeColor": "#e09b99"
+    "strokeColor": "#000000"
 }).lazylinepainter('paint');
 
 }
