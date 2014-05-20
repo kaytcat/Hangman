@@ -1,0 +1,85 @@
+<!DOCTYPEHTML>
+<html>
+<head>
+  <title>Snake</title>
+  <meta charset="utf-8">
+</head>
+  <style type="text/css"></style>
+
+<body>
+ <divid="wrapper">
+   <h1>Snake</h1>
+   <div id="score">Score:0     Level:1</div>
+   <canvas width="300"height="400"id="canvas">
+   </canvas>
+   <div id="control">Controls: W = Up; A = Left; S = Down; D = Right</div>
+ </div>
+
+<script type="text/javascript">
+  var context;
+  var width = 300;
+  var height =  400;
+  var snakeLength = 3;
+  var level = 1;
+  var sqSize = 10;
+  var bodyX = new Array(150, 150-sqSize, 150-2*sqSize);
+  var bodyY = new Array(200, 200, 200);
+  var vX = new Array(1, 1, 1);
+  var vY = new Array(0, 0, 0);
+  var rX;
+  var rY;
+  var score = 0;
+  var scoreDiv;
+  var eaten = true;
+  var gameOver = false;
+  var controlsDiv;
+
+  function init()
+    {
+    // Get game context
+    context = document.getElementById("canvas").getContext("2d");
+    //draws the canvas
+    drawCanvasBoundary();
+    //draws snake
+    drawSnake();
+    }
+    // insert the listener for onload event to call our init function
+    window.addEventListener("load", init, true);
+
+
+
+
+  function drawCanvasBoundary()
+    {
+    //set canvas color to be white
+    context.fillStyle="#FFF";
+    //draws a rectangle of canvas size filled with white color.
+    //This serves as our background
+    context.fillRect(0,0,width,height);
+    context.fill();
+    /*Draw black boundary if working in white background*/
+    context.strokeStyle="#000";
+    context.strokeRect(0,0,width,height)
+    }
+
+  function drawPoint(x,y)
+    {
+    // First draw a square for size "sqSize" filled with black
+    context.fillStyle = "#000";
+    context.fillRect(x,y,sqSize, sqSize);
+    context.fill();
+    // Then draw the square boundary in white
+    context.strokeStyle="#FFFFFF";
+    context.strokeRect(x,y,sqSize, sqSize);
+    }
+
+  function drawSnake()
+    {
+    for(var i=0; i < snakeLength; i++)
+      drawPoint(bodyX[i],bodyY[i]);
+    }
+
+</script>
+
+</body>
+</html>

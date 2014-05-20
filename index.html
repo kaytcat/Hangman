@@ -427,11 +427,35 @@ $(document).ready(function() {
       .removeAttr("class")
       .data("lazyLinePainter", null);
     $("#torso").html("");
+      .removeClass("lazy-line")
+      .removeAttr("style")
+      .removeAttr("class")
+      .data("lazyLinePainter", null);
     $("#leftArm").html("");
+      .removeClass("lazy-line")
+      .removeAttr("style")
+      .removeAttr("class")
+      .data("lazyLinePainter", null);
     $("#rightArm").html("");
+      .removeClass("lazy-line")
+      .removeAttr("style")
+      .removeAttr("class")
+      .data("lazyLinePainter", null);
     $("#leftLeg").html("");
+      .removeClass("lazy-line")
+      .removeAttr("style")
+      .removeAttr("class")
+      .data("lazyLinePainter", null);
     $("#rightLeg").html("");
+      .removeClass("lazy-line")
+      .removeAttr("style")
+      .removeAttr("class")
+      .data("lazyLinePainter", null);
     $(".face").removeClass("visible");
+      .removeClass("lazy-line")
+      .removeAttr("style")
+      .removeAttr("class")
+      .data("lazyLinePainter", null);
     bodyCount = 0;
     counterWin = 0;
 
@@ -622,7 +646,7 @@ function end() {
     remove_button.innerHTML = "";
 
   var removeWord = document.querySelector(".word");
-  removeWord.innerHTML = " You Lose! <br/> <span style='font-size 14px;'> The word was: </span>" + word;
+  removeWord.innerHTML = " You Lose! <br/> <span style='font-size: 14px;'> The word was: " + word + "</span>";
 
 
   $('.word').addClass('lose');
